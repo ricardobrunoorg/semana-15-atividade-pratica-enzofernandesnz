@@ -13,5 +13,14 @@ Nesta atividade, vamos integrar ao projeto o módulo de login, cujo código já 
 **Print da tela com a implementação**
 
 << Coloque aqui uma breve explicação da implementação feita nessa etapa>>
+
+
+
 <<  COLOQUE A IMAGEM TELA 1 AQUI (Mostrando seu marcador de favoritos)>>
+
+
+
 <<  COLOQUE A IMAGEM TELA 2 AQUI >>
+
+
+
