@@ -21,6 +21,9 @@ var db_usuarios = {};
 // Objeto para o usuário corrente
 var usuarioCorrente = {};
 
+// Páginas que não exigem login obrigatório (acesso público)
+const PUBLIC_PAGES = ['/index.html', '/', '/about.html'];
+
 // Inicializa a aplicação de Login
 function initLoginApp () {
     let pagina = window.location.pathname;
@@ -32,14 +35,15 @@ function initLoginApp () {
         // INICIALIZA USUARIOCORRENTE A PARTIR DE DADOS NO LOCAL STORAGE, CASO EXISTA
         usuarioCorrenteJSON = sessionStorage.getItem('usuarioCorrente');
         if (usuarioCorrenteJSON) {
-            usuarioCorrente = JSON.parse (usuarioCorrenteJSON);
-        } else {
+            usuarioCorrente = JSON.parse(usuarioCorrenteJSON);
+        } else if (!PUBLIC_PAGES.includes(pagina)) {
+            // Só redireciona para login se a página não for pública
             window.location.href = LOGIN_URL;
         }
 
         // REGISTRA LISTENER PARA O EVENTO DE CARREGAMENTO DA PÁGINA PARA ATUALIZAR INFORMAÇÕES DO USUÁRIO
         document.addEventListener('DOMContentLoaded', function () {
-            showUserInfo ('userInfo');
+            showUserInfo('userInfo');
         });
     }
     else {
@@ -128,9 +132,11 @@ function addUser (nome, login, senha, email) {
 
 function showUserInfo (element) {
     var elemUser = document.getElementById(element);
-    if (elemUser) {
-        elemUser.innerHTML = `${usuarioCorrente.nome} (${usuarioCorrente.login}) 
-                    <a onclick="logoutUser()">❌</a>`;
+    if (!elemUser) return;
+    if (usuarioCorrente && usuarioCorrente.nome) {
+        elemUser.innerHTML = `Olá, <strong>${usuarioCorrente.nome}</strong> | <a href="#" onclick="logoutUser(); return false;">Sair</a>`;
+    } else {
+        elemUser.innerHTML = `<a href="${LOGIN_URL}">Entrar</a>`;
     }
 }
 

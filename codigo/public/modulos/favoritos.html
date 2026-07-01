@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meus Favoritos</title>
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+    <script src="../assets/js/login.js"></script>
+    <script src="../assets/js/favoritos.js"></script>
+    <style>
+      .artigos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+      }
+      .card-artigo {
+        border: 2px solid #f5a623;
+        border-radius: 8px;
+        padding: 16px;
+        position: relative;
+        background: #fff;
+        box-shadow: 0 0 0 2px #f5a62330;
+      }
+      .card-artigo .categoria {
+        font-size: 0.75em;
+        background: #093070;
+        color: #fff;
+        padding: 2px 8px;
+        border-radius: 12px;
+        display: inline-block;
+        margin-bottom: 8px;
+      }
+      .card-artigo h4 { margin: 0 0 8px; color: #093070; font-size: 1em; }
+      .card-artigo p  { font-size: 0.9em; color: #555; margin: 0; }
+      .btn-remover {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #f5a623;
+        line-height: 1;
+        transition: color 0.2s;
+      }
+      .btn-remover:hover { color: #c0392b; }
+      .vazio { color: #888; font-style: italic; margin-top: 20px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="banner">
+        <img src="../assets/images/banner_ti.png" alt="Banner TI" />
+      </div>
+      <div class="barra-info">
+        <nav class="menu">
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../about.html">Sobre nós</a></li>
+            <li><a href="favoritos.html">⭐ Meus Favoritos</a></li>
+          </ul>
+        </nav>
+        <div class="dados-usuario">
+          <span id="userInfo"></span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <h3>⭐ Meus Favoritos</h3>
+      <p id="subtitulo"></p>
+      <div class="artigos-grid" id="favoritos-grid"></div>
+    </main>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        let usuario = JSON.parse(sessionStorage.getItem('usuarioCorrente'));
+
+        // Exige login para acessar esta página
+        if (!usuario) {
+          window.location.href = '/modulos/login/login.html';
+          return;
+        }
+
+        document.getElementById('subtitulo').textContent =
+          'Artigos salvos por ' + usuario.nome + ':';
+
+        let ids = getFavoritosIds();
+        if (ids.length === 0) {
+          document.getElementById('favoritos-grid').innerHTML =
+            '<p class="vazio">Você ainda não tem favoritos. <a href="../index.html">Voltar para Home</a></p>';
+          return;
+        }
+
+        fetch('/artigos')
+          .then(r => r.json())
+          .then(artigos => {
+            let grid = document.getElementById('favoritos-grid');
+            let favoritados = artigos.filter(a => ids.includes(a.id));
+            if (favoritados.length === 0) {
+              grid.innerHTML = '<p class="vazio">Você ainda não tem favoritos. <a href="../index.html">Voltar para Home</a></p>';
+              return;
+            }
+            grid.innerHTML = favoritados.map(a => `
+              <div class="card-artigo" id="card-${a.id}">
+                <button class="btn-remover" title="Remover dos favoritos"
+                  onclick="removerFavorito(${a.id})">★</button>
+                <span class="categoria">${a.categoria}</span>
+                <h4>${a.titulo}</h4>
+                <p>${a.descricao}</p>
+              </div>
+            `).join('');
+          });
+      });
+
+      function removerFavorito(artigoId) {
+        let ids = getFavoritosIds();
+        let novosIds = ids.filter(id => id !== artigoId);
+        // Salva diretamente no localStorage
+        let usuario = JSON.parse(sessionStorage.getItem('usuarioCorrente'));
+        localStorage.setItem('favoritos_' + usuario.id, JSON.stringify(novosIds));
+
+        let card = document.getElementById('card-' + artigoId);
+        if (card) card.remove();
+
+        let grid = document.getElementById('favoritos-grid');
+        if (grid.children.length === 0)
+          grid.innerHTML = '<p class="vazio">Você ainda não tem favoritos. <a href="../index.html">Voltar para Home</a></p>';
+      }
+    </script>
+  </body>
+</html>

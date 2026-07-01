@@ -21,5 +21,14 @@
       "email": "rommel@gmail.com",
       "id": 3
     }
-  ]
+  ],
+  "artigos": [
+    { "id": 1, "titulo": "O que é Inteligência Artificial?", "descricao": "Uma introdução aos conceitos fundamentais de IA e suas aplicações no mundo moderno.", "categoria": "IA" },
+    { "id": 2, "titulo": "Desenvolvimento Web com JavaScript", "descricao": "Aprenda como criar aplicações web dinâmicas utilizando JavaScript moderno.", "categoria": "Web" },
+    { "id": 3, "titulo": "Cloud Computing: AWS na prática", "descricao": "Guia prático para começar a usar os principais serviços da Amazon Web Services.", "categoria": "Cloud" },
+    { "id": 4, "titulo": "Segurança da Informação para iniciantes", "descricao": "Conceitos essenciais de cibersegurança que todo desenvolvedor deve conhecer.", "categoria": "Segurança" },
+    { "id": 5, "titulo": "Banco de Dados NoSQL com MongoDB", "descricao": "Entenda quando e como usar bancos de dados não relacionais em seus projetos.", "categoria": "Banco de Dados" },
+    { "id": 6, "titulo": "APIs RESTful: boas práticas", "descricao": "Como projetar e documentar APIs REST de forma eficiente e padronizada.", "categoria": "Web" }
+  ],
+  "favoritos": []
 }
