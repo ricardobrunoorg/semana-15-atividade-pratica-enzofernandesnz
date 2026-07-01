@@ -18,9 +18,9 @@ Nesta atividade, vamos integrar ao projeto o módulo de login, cujo código já 
 
 <<  COLOQUE A IMAGEM TELA 1 AQUI (Mostrando seu marcador de favoritos)>>
 
-
+![Tela 2](img_tela/tela2.png)
 
 <<  COLOQUE A IMAGEM TELA 2 AQUI >>
 
-
+![Tela 1 - Marcador de Favoritos](img_tela/tela1.png)
 
